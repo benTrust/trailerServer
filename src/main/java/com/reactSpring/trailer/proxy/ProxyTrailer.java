@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.reactSpring.trailer.proxy.model.DiscoverMovies;
 import com.reactSpring.trailer.proxy.model.MovieAPI;
+import com.reactSpring.trailer.proxy.model.MovieSearch;
 import com.reactSpring.trailer.proxy.model.Recommendation;
 
 @FeignClient( name = "api.themoviedb.org", url = "api.themoviedb.org/3")
 public interface ProxyTrailer {
 	
-	final String TOKEN = "api_key=YOUR_API_KEY";
+	final String TOKEN = "api_key=YOUR_API";
 	final String AND_TOKEN = "&" + TOKEN;
 	
 	@GetMapping(value = "discover/movie?language=fr&sort_by=popularity.desc&include_adult=false&append_to_response=images" + AND_TOKEN)
@@ -22,4 +23,7 @@ public interface ProxyTrailer {
 	
 	@GetMapping(value = "/movie/{id}/recommendations?include_adult=false&language=fr" + AND_TOKEN)
 	public Recommendation recommendationMovies(@PathVariable Long id);
+	
+	@GetMapping(value = "/search/movie?language=fr&include_adult=false&query={text}" + AND_TOKEN)
+	public MovieSearch searchMovies(@PathVariable String text);
 }

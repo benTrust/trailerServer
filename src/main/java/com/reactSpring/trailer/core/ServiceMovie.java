@@ -11,7 +11,9 @@ import com.reactSpring.trailer.noPersistent.GlobalMovie;
 import com.reactSpring.trailer.proxy.ProxyTrailer;
 import com.reactSpring.trailer.proxy.model.DiscoverMovies;
 import com.reactSpring.trailer.proxy.model.MovieAPI;
+import com.reactSpring.trailer.proxy.model.MovieSearch;
 import com.reactSpring.trailer.proxy.model.Recommendation;
+import com.reactSpring.trailer.util.Utils;
 
 import feign.FeignException;
 
@@ -79,6 +81,13 @@ public class ServiceMovie {
 			}
 		}
 		return recommendation;
+	}
+	
+	public MovieSearch searchMovies(String text) {
+		if(Utils.isNull(text)) {
+			throw new BadRequestException("Le text doit ête renseigné");
+		}
+		return proxyTrailer.searchMovies(text);
 	}
 	
 	public DiscoverMovies discoverMovie() {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reactSpring.trailer.core.ServiceComment;
@@ -13,6 +14,7 @@ import com.reactSpring.trailer.core.ServiceMovie;
 import com.reactSpring.trailer.noPersistent.CommentUser;
 import com.reactSpring.trailer.noPersistent.GlobalMovie;
 import com.reactSpring.trailer.proxy.model.DiscoverMovies;
+import com.reactSpring.trailer.proxy.model.MovieSearch;
 import com.reactSpring.trailer.proxy.model.Recommendation;
 
 @CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
@@ -43,5 +45,10 @@ public class MovieRest {
 	@GetMapping(value = "/movie/{id}/recommendations")
 	public Recommendation recommendationMovies(@PathVariable Long id) {
 		return serviceMovie.recommendationMovies(id);
+	}
+	
+	@GetMapping(value = "/searchMovie")
+	public MovieSearch searchMovies(@RequestParam String text) {
+		return serviceMovie.searchMovies(text);
 	}
 }
