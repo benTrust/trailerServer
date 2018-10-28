@@ -49,6 +49,9 @@ public class ServiceComment {
 		Long idCommentParent = commentUser.getIdParent();
 		if(idCommentParent != null) {
 			Comment commentParent = getComment(idCommentParent);
+			if(commentParent.getParentComment() != null) {
+				commentParent = commentParent.getParentComment();
+			}
 			comment.setParentComment(commentParent);
 		}else {
 			//If comment c1 in c2 so movie is in c1.c2.movie else :

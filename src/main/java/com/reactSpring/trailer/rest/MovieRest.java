@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.reactSpring.trailer.core.ServiceComment;
 import com.reactSpring.trailer.core.ServiceMovie;
+import com.reactSpring.trailer.model.Comment;
+import com.reactSpring.trailer.model.Movie;
 import com.reactSpring.trailer.noPersistent.CommentUser;
 import com.reactSpring.trailer.noPersistent.GlobalMovie;
 import com.reactSpring.trailer.proxy.model.DiscoverMovies;
@@ -38,8 +40,13 @@ public class MovieRest {
 	}
 	
 	@PostMapping(value = "/movie/{idExternal}/comment")
-	public void newComment(@PathVariable Long idExternal, @RequestBody CommentUser commentUser) {
-		serviceComment.newComment(idExternal, commentUser);
+	public GlobalMovie newComment(@PathVariable Long idExternal, @RequestBody CommentUser commentUser) {
+		Comment commentAdd = serviceComment.newComment(idExternal, commentUser);
+		Movie movieComment = commentAdd.getMovie();
+		if(movieComment == null) {
+			movieComment = commentAdd.getParentComment().getMovie();
+		}
+		return serviceMovie.getMovie(movieComment.getExternalRef());
 	}
 	
 	@GetMapping(value = "/movie/{id}/recommendations")

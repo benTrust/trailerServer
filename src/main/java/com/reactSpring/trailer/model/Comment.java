@@ -1,5 +1,6 @@
 package com.reactSpring.trailer.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class Comment {
 		return parentComment;
 	}
 	public void setParentComment(Comment parentComment) {
+		parentComment.addComment(this);
 		this.parentComment = parentComment;
 	}
 	public Long getId() {
@@ -70,6 +72,7 @@ public class Comment {
 		return movie;
 	}
 	public void setMovie(Movie movie) {
+		movie.addComment(this);
 		this.movie = movie;
 	}
 	public Date getDate() {
@@ -105,6 +108,13 @@ public class Comment {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public void addComment(Comment comment) {
+		if(this.comments == null) {
+			this.comments = new ArrayList<Comment>();
+		}
+		this.comments.add(comment);
 	}
 	
 	

@@ -12,7 +12,7 @@ import com.reactSpring.trailer.proxy.model.Recommendation;
 @FeignClient( name = "api.themoviedb.org", url = "api.themoviedb.org/3")
 public interface ProxyTrailer {
 	
-	final String TOKEN = "api_key=YOUR_API";
+	final String TOKEN = "api_key=YOUR_API_KEY";
 	final String AND_TOKEN = "&" + TOKEN;
 	
 	@GetMapping(value = "discover/movie?language=fr&sort_by=popularity.desc&include_adult=false&append_to_response=images" + AND_TOKEN)
