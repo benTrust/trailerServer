@@ -8,7 +8,7 @@ import com.reactSpring.trailer.exception.BadRequestException;
 import com.reactSpring.trailer.exception.NotFoundException;
 import com.reactSpring.trailer.model.Movie;
 import com.reactSpring.trailer.noPersistent.GlobalMovie;
-import com.reactSpring.trailer.proxy.ProxyTrailer;
+import com.reactSpring.trailer.proxy.ProxyTrailerService;
 import com.reactSpring.trailer.proxy.model.DiscoverMovies;
 import com.reactSpring.trailer.proxy.model.MovieAPI;
 import com.reactSpring.trailer.proxy.model.MovieSearch;
@@ -21,7 +21,7 @@ import feign.FeignException;
 public class ServiceMovie {
 	
 	@Autowired
-	ProxyTrailer proxyTrailer;
+	ProxyTrailerService proxyTrailerService;
 	
 	@Autowired
 	DaoMovie daoMovie;
@@ -30,7 +30,7 @@ public class ServiceMovie {
 		if(idExternal == null) {
 			throw new BadRequestException("Le film d'identifiant externe doit être renseigné");
 		}
-		MovieAPI movieAPI = proxyTrailer.getMovie(idExternal);
+		MovieAPI movieAPI = proxyTrailerService.getMovie(idExternal);
 		if(movieAPI == null) {
 			throw new NotFoundException(String.format("Le film d'identifiant externe [%d] n'existe pas", idExternal));
 		}
@@ -58,7 +58,7 @@ public class ServiceMovie {
 		}
 		MovieAPI movieAPI = null; 
 		try {
-			movieAPI = proxyTrailer.getMovie(idExternal);
+			movieAPI = proxyTrailerService.getMovie(idExternal);
 		}catch(FeignException e) {
 			if(e.status() == 404) {
 				throw new NotFoundException(String.format("Le film externe d'identifiant [%d] n'existe pas", idExternal));
@@ -74,7 +74,7 @@ public class ServiceMovie {
 		}
 		Recommendation recommendation = null;
 		try {
-			recommendation = proxyTrailer.recommendationMovies(idExternal);
+			recommendation = proxyTrailerService.recommendationMovies(idExternal);
 		}catch(FeignException e) {
 			if(e.status() == 404) {
 				throw new NotFoundException(String.format("Le film externe d'identifiant [%d] n'existe pas", idExternal));
@@ -87,10 +87,10 @@ public class ServiceMovie {
 		if(Utils.isNull(text)) {
 			throw new BadRequestException("Le text doit ête renseigné");
 		}
-		return proxyTrailer.searchMovies(text);
+		return proxyTrailerService.searchMovies(text);
 	}
 	
 	public DiscoverMovies discoverMovie() {
-		return proxyTrailer.discoverMovie();
+		return proxyTrailerService.discoverMovie();
 	}
 }
