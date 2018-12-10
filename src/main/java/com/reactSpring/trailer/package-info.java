@@ -1,4 +1,4 @@
 /**
- * Projet trailer
+ * Projet trailer.
  */
 package com.reactSpring.trailer;
